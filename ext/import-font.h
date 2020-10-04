@@ -46,6 +46,8 @@ FontHandle * adoptFreetypeFont(FT_Face ftFace);
 #endif
 /// Loads a font file and returns its handle.
 FontHandle * loadFont(FreetypeHandle *library, const char *filename);
+/// Loads a font memory and returns its handle.
+FontHandle * loadFontMemory(FreetypeHandle *library, const unsigned char* buffer, const signed long size);
 /// Unloads a font file.
 void destroyFont(FontHandle *font);
 /// Outputs the metrics of a font file.
