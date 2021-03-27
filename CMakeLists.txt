@@ -13,7 +13,7 @@ option(FREETYPE_EXTERNAL "Use Freetype as ExternalProject" OFF)
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
 if(FREETYPE_EXTERNAL)
-    add_library(Freetype INTERFACE IMPORTED)
+    add_library(Freetype INTERFACE IMPORTED GLOBAL)
     add_library(Freetype::Freetype ALIAS Freetype)
     target_include_directories(Freetype INTERFACE ${FREETYPE_INCLUDE_DIRS})
     target_link_directories(Freetype INTERFACE ${FREETYPE_LIBRARY})
