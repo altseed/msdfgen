@@ -8,8 +8,16 @@ option(MSDFGEN_USE_SKIA "Build with the Skia library" OFF)
 option(MSDFGEN_INSTALL "Generate installation target" ON)
 option(FREETYPE_WITH_PNG "Link libpng and zlib because FreeType is configured to require it" OFF)
 option(FREETYPE_WITH_HARFBUZZ "Link HarfBuzz because FreeType is configured to require it" OFF)
+option(FREETYPE_EXTERNAL "Use Freetype as ExternalProject" OFF)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
+
+if(FREETYPE_EXTERNAL)
+    add_library(Freetype INTERFACE IMPORTED GLOBAL)
+    add_library(Freetype::Freetype ALIAS Freetype)
+    target_include_directories(Freetype INTERFACE ${FREETYPE_INCLUDE_DIRS})
+    target_link_directories(Freetype INTERFACE ${FREETYPE_LIBRARY})
+endif()
 
 if(NOT TARGET Freetype::Freetype)
     find_package(Freetype REQUIRED)
@@ -86,7 +94,8 @@ add_library(msdfgen::msdfgen-ext ALIAS msdfgen-ext)
 set_target_properties(msdfgen-ext PROPERTIES
 	PUBLIC_HEADER "${msdfgen-ext_PUBLIC_HEADERS}"
 )
-target_link_libraries(msdfgen-ext PUBLIC msdfgen::msdfgen Freetype::Freetype)
+target_link_libraries(msdfgen-ext PUBLIC msdfgen::msdfgen)
+target_link_libraries(msdfgen-ext PRIVATE Freetype::Freetype)
 target_include_directories(msdfgen-ext
 PUBLIC
 	$<INSTALL_INTERFACE:include>
